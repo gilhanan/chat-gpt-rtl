@@ -1,12 +1,51 @@
 {
   "name": "chatgpt-rtl",
   "version": "1.0.0",
-  "description": "",
-  "main": "content.js",
+  "description": "RTL support for ChatGPT. Auto-detects RTL in real-time for languages like Arabic, Hebrew, and more.",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "webpack": "webpack --config webpack/webpack.config.js",
+    "build": "npm run webpack && node zip.js",
+    "watch": "npm run webpack -- --watch"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+  "keywords": [
+    "ChatGPT",
+    "OpenAI",
+    "RTL",
+    "Right-to-Left",
+    "Arabic",
+    "Hebrew",
+    "Persian",
+    "Urdu",
+    "Language Support",
+    "Chrome Extension",
+    "DOM Manipulation",
+    "User Interface",
+    "Usability",
+    "Accessibility"
+  ],
+  "author": "Gil Hanan <gil.hanan@gmail.com>",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/chrome": "^0.0.241",
+    "archiver": "^5.3.1",
+    "clean-webpack-plugin": "^4.0.0",
+    "copy-webpack-plugin": "^11.0.0",
+    "css-loader": "^6.8.1",
+    "eslint": "^8.45.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-config-standard-with-typescript": "^36.1.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-n": "^16.0.1",
+    "eslint-plugin-prettier": "^5.0.0",
+    "eslint-plugin-promise": "^6.1.1",
+    "ignore-emit-webpack-plugin": "^2.0.6",
+    "mini-css-extract-plugin": "^2.7.6",
+    "prettier": "^3.0.0",
+    "sass": "^1.63.6",
+    "sass-loader": "^13.3.2",
+    "ts-loader": "^9.4.4",
+    "typescript": "^5.1.6",
+    "webpack": "^5.88.1",
+    "webpack-cli": "^5.1.4"
+  }
 }

@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "lib": ["DOM"],
+    "module": "CommonJS",
+    "target": "ES6",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true
+  }
+}
