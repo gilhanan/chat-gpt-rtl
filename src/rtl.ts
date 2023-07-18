@@ -1,9 +1,12 @@
 import {
   containsRTL,
   filterHTMLElements,
+  isHTMLTextAreaElement,
   queryHTMLElements,
   toggleClass,
 } from "./utils";
+
+const rtlClass = "chat-gpt-rtl";
 
 export function toggleRTLEnabled({ enabled }: { enabled: boolean }): void {
   toggleClass({
@@ -17,15 +20,15 @@ function getRTLElements(element: HTMLElement): HTMLElement[] {
   return queryHTMLElements({
     element,
     selector: "p, ol, ul, div:not(:has(*))",
-  }).filter(isRTLApplicable);
+  }).filter(({ innerText }) => isRTLApplicable(innerText));
 }
 
-function isRTLApplicable({ innerText }: HTMLElement): boolean {
-  return Boolean(innerText) && containsRTL(innerText);
+function isRTLApplicable(text: string): boolean {
+  return Boolean(text) && containsRTL(text);
 }
 
-function addRTLClass({ classList }: HTMLElement): void {
-  classList.add("chat-gpt-rtl");
+function addRTLClass(element: HTMLElement): void {
+  toggleClass({ element, className: rtlClass, enabled: true });
 }
 
 function applyRTLToChildrens(element: HTMLElement): void {
@@ -34,16 +37,27 @@ function applyRTLToChildrens(element: HTMLElement): void {
 
 export function applyRTLToMutations(mutations: MutationRecord[]): void {
   mutations.forEach(({ type, addedNodes, target }) => {
+    const { nodeType, parentElement } = target;
+
     if (type === "childList") {
-      filterHTMLElements(addedNodes).forEach(applyRTLToChildrens);
+      if (isHTMLTextAreaElement(target)) {
+        toggleClass({
+          element: target,
+          className: rtlClass,
+          enabled: isRTLApplicable(target.value),
+        });
+      } else {
+        filterHTMLElements(addedNodes).forEach(applyRTLToChildrens);
+      }
     }
 
     if (
       type === "characterData" &&
-      target?.parentElement != null &&
-      isRTLApplicable(target.parentElement)
+      nodeType === Node.TEXT_NODE &&
+      parentElement !== null &&
+      isRTLApplicable(parentElement.innerText)
     ) {
-      addRTLClass(target.parentElement);
+      addRTLClass(parentElement);
     }
   });
 }
