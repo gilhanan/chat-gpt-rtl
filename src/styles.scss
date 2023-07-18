@@ -1,0 +1,33 @@
+.chat-gpt-rtl-switch-container {
+  position: absolute;
+  display: flex;
+  padding: 0.75rem;
+  align-items: center;
+  gap: 0.25rem;
+  z-index: 1000;
+}
+
+.chat-gpt-rtl {
+  main {
+    p,
+    ol,
+    ul,
+    .empty\:hidden {
+      direction: rtl !important;
+    }
+  }
+
+  ol,
+  ul {
+    > li:before {
+      padding-right: 0 !important;
+      padding-left: 0.5rem !important;
+      --tw-translate-x: 100% !important;
+    }
+  }
+
+  .math {
+    display: block !important;
+    direction: ltr !important;
+  }
+}
