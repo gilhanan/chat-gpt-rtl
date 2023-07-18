@@ -8,7 +8,11 @@ function observeChanges({
   callback: MutationCallback;
 }): MutationObserver {
   const observer = new MutationObserver(callback);
-  observer.observe(target, { childList: true, subtree: true });
+  observer.observe(target, {
+    childList: true,
+    subtree: true,
+    characterData: true,
+  });
 
   return observer;
 }

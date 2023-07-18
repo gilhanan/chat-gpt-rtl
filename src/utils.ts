@@ -45,7 +45,7 @@ function isHTMLElement(node: Node): node is HTMLElement {
   return node instanceof HTMLElement;
 }
 
-function filterHTMLElements(nodeList: NodeList): HTMLElement[] {
+export function filterHTMLElements(nodeList: NodeList): HTMLElement[] {
   return Array.from(nodeList).filter(isHTMLElement);
 }
 
@@ -57,12 +57,4 @@ export function queryHTMLElements({
   selector: string;
 }): HTMLElement[] {
   return filterHTMLElements(element.querySelectorAll(selector));
-}
-
-export function mutationRecordsToHTMLElements(
-  mutationRecords: MutationRecord[],
-): HTMLElement[] {
-  return mutationRecords.flatMap(({ addedNodes }) =>
-    filterHTMLElements(addedNodes),
-  );
 }

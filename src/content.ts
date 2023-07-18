@@ -1,10 +1,9 @@
-import { mutationRecordsToHTMLElements } from "./utils";
-import { applyRTLToElements } from "./rtl";
+import { applyRTLToMutations } from "./rtl";
 import { observeChangesOnce } from "./observers";
 import { initRTLEnabled } from "./rtl-enabled";
 
 const mainObserverCallback: MutationCallback = (mutations) => {
-  mutationRecordsToHTMLElements(mutations).forEach(applyRTLToElements);
+  applyRTLToMutations(mutations);
 };
 
 function observeMainChanges(): void {
