@@ -20,6 +20,11 @@ function onRTLEnabledChange({ enabled }: { enabled: boolean }): void {
 }
 
 export function initRTLEnabled(): void {
+  const enabled = getRTLEnabledValue();
+  toggleRTLEnabled({ enabled });
+}
+
+export function initRTLEnabledCheckbox(): void {
   const header = getUninitilizedHeader();
 
   if (header == null) return;

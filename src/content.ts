@@ -1,6 +1,6 @@
 import { applyRTLToMutations } from "./rtl";
 import { observeChangesOnce } from "./observers";
-import { initRTLEnabled } from "./rtl-enabled";
+import { initRTLEnabled, initRTLEnabledCheckbox } from "./rtl-enabled";
 
 const mainObserverCallback: MutationCallback = (mutations) => {
   applyRTLToMutations(mutations);
@@ -13,9 +13,11 @@ function observeMainChanges(): void {
 }
 
 function documentObserverCallback(): void {
-  initRTLEnabled();
+  initRTLEnabledCheckbox();
   observeMainChanges();
 }
+
+initRTLEnabled();
 
 observeChangesOnce({
   target: document.body,
