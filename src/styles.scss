@@ -7,27 +7,19 @@
   z-index: 1000;
 }
 
-.chat-gpt-rtl {
-  main {
-    p,
-    ol,
-    ul,
-    .empty\:hidden {
-      direction: rtl !important;
-    }
-  }
+.chat-gpt-rtl-enabled {
+  .chat-gpt-rtl {
+    direction: rtl !important;
 
-  ol,
-  ul {
     > li:before {
       padding-right: 0 !important;
       padding-left: 0.5rem !important;
       --tw-translate-x: 100% !important;
     }
-  }
 
-  .math {
-    display: block !important;
-    direction: ltr !important;
+    .math {
+      display: inline-block !important;
+      direction: ltr !important;
+    }
   }
 }

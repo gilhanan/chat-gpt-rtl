@@ -1,9 +1,9 @@
-const switchInputStorageKey = "chat-gpt-rtl-switch-input";
+const switchInputStorageKey = "chat-gpt-rtl-enabled";
 
-export function getCheckedValue(): boolean {
-  return localStorage.getItem(switchInputStorageKey) === "true";
+export function getRTLEnabledValue(): boolean {
+  return !(localStorage.getItem(switchInputStorageKey) === "false");
 }
 
-export function setCheckedValue({ checked }: { checked: boolean }): void {
-  localStorage.setItem(switchInputStorageKey, checked.toString());
+export function setRTLEnabledValue(enabled: boolean): void {
+  localStorage.setItem(switchInputStorageKey, enabled.toString());
 }

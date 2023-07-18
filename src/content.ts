@@ -1,40 +1,24 @@
-import { appendCheckBox, switchContainerClass } from "./elements";
-import { getCheckedValue, setCheckedValue } from "./storage";
+import { mutationRecordsToHTMLElements } from "./utils";
+import { applyRTLToElements } from "./rtl";
+import { observeChangesOnce } from "./observers";
+import { initRTLEnabled } from "./rtl-enabled";
 
-function toggleRTLClass({ checked }: { checked: boolean }): void {
-  const rtlClass = "chat-gpt-rtl";
+const mainObserverCallback: MutationCallback = (mutations) => {
+  mutationRecordsToHTMLElements(mutations).forEach(applyRTLToElements);
+};
 
-  if (checked) {
-    document.body.classList.add(rtlClass);
-  } else {
-    document.body.classList.remove(rtlClass);
-  }
+function observeMainChanges(): void {
+  const main = document.querySelector("main");
+  if (main == null) return;
+  observeChangesOnce({ target: main, callback: mainObserverCallback });
 }
 
-function onDirectionChange({ checked }: { checked: boolean }): void {
-  setCheckedValue({ checked });
-  toggleRTLClass({ checked });
+function documentObserverCallback(): void {
+  initRTLEnabled();
+  observeMainChanges();
 }
 
-function observerCallback(): void {
-  const header = document.querySelector("header");
-
-  if (header == null) {
-    return;
-  }
-
-  if (header.querySelector(`.${switchContainerClass}`) != null) {
-    return;
-  }
-
-  const checked = getCheckedValue();
-  toggleRTLClass({ checked });
-  appendCheckBox({ header, checked, onDirectionChange });
-}
-
-function observeChanges(): void {
-  const observer = new MutationObserver(observerCallback);
-  observer.observe(document, { childList: true, subtree: true });
-}
-
-observeChanges();
+observeChangesOnce({
+  target: document.body,
+  callback: documentObserverCallback,
+});
