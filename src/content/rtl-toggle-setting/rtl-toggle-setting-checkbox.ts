@@ -1,4 +1,4 @@
-import { createButton, createDiv, createSpan } from "./dom";
+import { createButton, createDiv, createSpan } from "../../shared/dom";
 
 type SwitchInputOnChange = ({ checked }: { checked: boolean }) => void;
 
@@ -63,7 +63,6 @@ function createRTLEnabledContainer({
   });
 
   const buttonContainer = createDiv({
-    className: "",
     textContent: "Auto Right to Left",
   });
 

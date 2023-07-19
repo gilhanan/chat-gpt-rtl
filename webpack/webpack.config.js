@@ -1,17 +1,19 @@
 const path = require("path");
 const CopyPlugin = require("copy-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const IgnoreEmitPlugin = require("ignore-emit-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
+const srcFolder = "src";
 const content = "content";
-const styles = "styles";
+const popup = "popup";
+
+const src = path.resolve(__dirname, "..", srcFolder);
 
 module.exports = {
   mode: "production",
   entry: {
-    [content]: path.resolve(__dirname, "..", "src", `${content}.ts`),
-    [styles]: path.resolve(__dirname, "..", "src", `${styles}.scss`),
+    [`${content}/${content}`]: path.resolve(src, content, `${content}.ts`),
+    [`${popup}/${popup}`]: path.resolve(src, popup, `${popup}.ts`),
   },
   output: {
     path: path.join(__dirname, "../dist"),
@@ -23,7 +25,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.tsx?$/,
+        test: /\.ts$/,
         loader: "ts-loader",
         exclude: /node_modules/,
       },
@@ -37,11 +39,16 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin(),
     new CopyPlugin({
-      patterns: [{ from: ".", to: ".", context: "public" }],
+      patterns: [
+        { from: ".", to: ".", context: "public" },
+        {
+          from: path.resolve(src, popup, `${popup}.html`),
+          to: path.resolve(__dirname, "../dist", popup, `${popup}.html`),
+        },
+      ],
     }),
     new MiniCssExtractPlugin({
       filename: "[name].css",
     }),
-    new IgnoreEmitPlugin([`${styles}.js`]),
   ],
 };
