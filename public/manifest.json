@@ -2,7 +2,7 @@
   "name": "ChatGPT RTL",
   "description": "RTL support for ChatGPT. Auto-detects RTL in real-time for languages like Arabic, Hebrew, and more.",
   "manifest_version": 3,
-  "version": "1.0",
+  "version": "1.1",
   "content_scripts": [
     {
       "matches": ["https://chat.openai.com/*"],
