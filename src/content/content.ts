@@ -10,7 +10,7 @@ import {
   enableRTLElement,
   toggleRTLGlobal,
 } from "./rtl";
-import { observeChangesOnce } from "./observers";
+import { observeChanges, observeChangesOnce } from "./observers";
 import { initRTLEnabled, initRTLEnabledCheckbox } from "./rtl-toggle-setting";
 import { isToggleRTLGlobalMessage } from "../shared/messages";
 
@@ -55,8 +55,18 @@ const mainObserverCallback: MutationCallback = (mutations) => {
 
 function observeMainChanges(): void {
   const main = document.querySelector("main");
-  if (main == null) return;
-  observeChangesOnce({ target: main, callback: mainObserverCallback });
+
+  if (main === null) return;
+
+  observeChangesOnce({
+    target: main,
+    options: {
+      childList: true,
+      subtree: true,
+      characterData: true,
+    },
+    callback: mainObserverCallback,
+  });
 }
 
 const documentObserverCallback: MutationCallback = (mutations) => {
@@ -73,7 +83,11 @@ chrome.runtime.onMessage.addListener((message) => {
 
 void initRTLEnabled();
 
-observeChangesOnce({
+observeChanges({
   target: document.body,
+  options: {
+    childList: true,
+    subtree: true,
+  },
   callback: documentObserverCallback,
 });
