@@ -1,6 +1,6 @@
 {
   "name": "ChatGPT RTL",
-  "description": "RTL support for ChatGPT. Auto-detects RTL in real-time for languages like Arabic, Hebrew, and more.",
+  "description": "ChatGPT Right to Left (RTL) alignments. Supports Arabic, Persian, Hebrew, and more.",
   "manifest_version": 3,
   "version": "1.2",
   "content_scripts": [
