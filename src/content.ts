@@ -12,10 +12,10 @@ function observeMainChanges(): void {
   observeChangesOnce({ target: main, callback: mainObserverCallback });
 }
 
-function documentObserverCallback(): void {
-  initRTLEnabledCheckbox();
+const documentObserverCallback: MutationCallback = (mutations) => {
+  initRTLEnabledCheckbox(mutations);
   observeMainChanges();
-}
+};
 
 initRTLEnabled();
 

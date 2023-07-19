@@ -45,7 +45,7 @@ export function isHTMLTextAreaElement(node: Node): node is HTMLTextAreaElement {
   return node instanceof HTMLTextAreaElement;
 }
 
-function isHTMLElement(node: Node): node is HTMLElement {
+export function isHTMLElement(node: Node): node is HTMLElement {
   return node instanceof HTMLElement;
 }
 

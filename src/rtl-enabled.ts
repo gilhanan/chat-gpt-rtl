@@ -1,18 +1,7 @@
 import { toggleRTLEnabled } from "./rtl";
-import {
-  appendRTLEnabledCheckbox,
-  switchContainerClass,
-} from "./rtl-enabled-checkbox";
+import { appendRTLEnabledCheckbox } from "./rtl-enabled-checkbox";
 import { getRTLEnabledValue, setRTLEnabledValue } from "./storage";
-
-function getUninitilizedHeader(): HTMLElement | null {
-  const header = document.querySelector("header");
-
-  return header != null &&
-    header.querySelector(`.${switchContainerClass}`) == null
-    ? header
-    : null;
-}
+import { isHTMLElement } from "./utils";
 
 function onRTLEnabledChange({ enabled }: { enabled: boolean }): void {
   setRTLEnabledValue(enabled);
@@ -24,16 +13,19 @@ export function initRTLEnabled(): void {
   toggleRTLEnabled({ enabled });
 }
 
-export function initRTLEnabledCheckbox(): void {
-  const header = getUninitilizedHeader();
+export function initRTLEnabledCheckbox(mutations: MutationRecord[]): void {
+  const generalSettingsPanel = mutations
+    .flatMap(({ addedNodes }) => Array.from(addedNodes))
+    .filter(isHTMLElement)
+    .map((node) => node.querySelector('div[id$="content-General"] > div'))
+    .find(Boolean);
 
-  if (header == null) return;
+  if (generalSettingsPanel == null) return;
 
   const enabled = getRTLEnabledValue();
 
-  toggleRTLEnabled({ enabled });
   appendRTLEnabledCheckbox({
-    header,
+    generalSettingsPanel,
     enabled,
     onChange: ({ checked }) => {
       onRTLEnabledChange({ enabled: checked });
