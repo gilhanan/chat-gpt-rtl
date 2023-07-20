@@ -1,4 +1,4 @@
-import { setRTLEnabledValue } from "../shared/storage";
+import { setRTLEnabledValue } from "../shared/rtl-enabled-storage";
 import { containsRTL } from "../shared/utils";
 import { toggleClass } from "../shared/dom";
 

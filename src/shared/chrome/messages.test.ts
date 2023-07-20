@@ -1,36 +1,8 @@
-import {
-  type ToggleRTLGlobalMessage,
-  type Message,
-  sendMessage,
-  MessageActions,
-  isToggleRTLGlobalMessage,
-} from "./messages";
+import { sendMessage } from "./messages";
 
 type QueryCallback = (result: chrome.tabs.Tab[]) => void;
 
-const mockMessage: ToggleRTLGlobalMessage = {
-  action: MessageActions.ToggleRTLGlobal,
-  enabled: true,
-};
-
-describe("isToggleRTLGlobalMessage", () => {
-  it("should return true if message is ToggleRTLGlobalMessage", () => {
-    const message: ToggleRTLGlobalMessage = {
-      action: MessageActions.ToggleRTLGlobal,
-      enabled: true,
-    };
-    expect(isToggleRTLGlobalMessage(message)).toBe(true);
-  });
-
-  it("should return false if message is not ToggleRTLGlobalMessage", () => {
-    const message: Message = { action: "OtherAction" as MessageActions };
-    expect(isToggleRTLGlobalMessage(message)).toBe(false);
-  });
-
-  it("should return false if message is null", () => {
-    expect(isToggleRTLGlobalMessage(null as unknown as Message)).toBe(false);
-  });
-});
+const message = { action: "Test" };
 
 describe("sendMessage", () => {
   let tabs = [] as chrome.tabs.Tab[];
@@ -57,25 +29,22 @@ describe("sendMessage", () => {
     } as unknown as typeof chrome;
   });
 
-  it("should send a message to the current tab", () => {
+  it("should send a message to the current tab", async () => {
     const tab = { id: 1 } as unknown as chrome.tabs.Tab;
 
     tabs = [tab];
 
-    sendMessage({
-      action: MessageActions.ToggleRTLGlobal,
-      enabled: true,
-    });
+    await sendMessage(message);
 
     expect(chrome.tabs.query).toHaveBeenCalledWith(
       { active: true, currentWindow: true },
       expect.any(Function),
     );
-    expect(chrome.tabs.sendMessage).toHaveBeenCalledWith(tab.id, mockMessage);
+    expect(chrome.tabs.sendMessage).toHaveBeenCalledWith(tab.id, message);
   });
 
   it("should not send a message if there is no current tab", () => {
-    sendMessage(mockMessage);
+    void sendMessage(message);
 
     expect(chrome.tabs.query).toHaveBeenCalledWith(
       { active: true, currentWindow: true },

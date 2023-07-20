@@ -1,6 +1,6 @@
 import "./popup.scss";
-import { getRTLEnabledValue } from "../shared/storage";
-import { MessageActions, sendMessage } from "../shared/messages";
+import { getRTLEnabledValue } from "../shared/rtl-enabled-storage";
+import { sendToggleRTLGlobalMessage } from "../shared/toggle-rtl-message";
 import { createDiv, createHeading } from "../shared/dom/create";
 import { createToggleSwitch } from "./toggle-switch/toggle-switch";
 
@@ -15,8 +15,7 @@ async function createToggleSwitchSettingRow(): Promise<HTMLDivElement> {
     textContent: "Enable automatic RTL detection",
     checked: enabled,
     onChanged: ({ checked }) => {
-      sendMessage({
-        action: MessageActions.ToggleRTLGlobal,
+      void sendToggleRTLGlobalMessage({
         enabled: checked,
       });
     },

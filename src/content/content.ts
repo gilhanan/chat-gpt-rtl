@@ -12,7 +12,7 @@ import {
 } from "./rtl";
 import { observeChanges, observeChangesOnce } from "./observers";
 import { initRTLEnabled, initRTLEnabledCheckbox } from "./rtl-toggle-setting";
-import { isToggleRTLGlobalMessage } from "../shared/messages";
+import { isToggleRTLGlobalMessage } from "../shared/toggle-rtl-message";
 
 function applyRTLToChildrens(element: HTMLElement): void {
   queryHTMLElements({
