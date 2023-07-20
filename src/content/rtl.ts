@@ -7,7 +7,7 @@ export function toggleRTLGlobal({ enabled }: { enabled: boolean }): void {
     className: "chat-gpt-rtl-enabled",
     enabled,
   });
-  setRTLEnabledValue(enabled);
+  void setRTLEnabledValue(enabled);
 }
 
 export function toggleRTLElement({
