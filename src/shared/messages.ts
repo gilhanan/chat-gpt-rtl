@@ -2,7 +2,7 @@ export enum MessageActions {
   ToggleRTLGlobal = "ToggleRTLGlobal",
 }
 
-interface Message {
+export interface Message {
   action: MessageActions;
 }
 
