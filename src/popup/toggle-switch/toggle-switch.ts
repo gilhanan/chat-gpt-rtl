@@ -4,7 +4,7 @@ import {
   createCheckbox,
   createSpan,
   createLabel,
-} from "../../shared/dom";
+} from "../../shared/dom/create";
 
 const inputId = "switch-container";
 

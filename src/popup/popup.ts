@@ -1,7 +1,7 @@
 import "./popup.scss";
 import { getRTLEnabledValue } from "../shared/storage";
 import { MessageActions, sendMessage } from "../shared/messages";
-import { createDiv, createHeading } from "../shared/dom";
+import { createDiv, createHeading } from "../shared/dom/create";
 import { createToggleSwitch } from "./toggle-switch/toggle-switch";
 
 async function createToggleSwitchSettingRow(): Promise<HTMLDivElement> {

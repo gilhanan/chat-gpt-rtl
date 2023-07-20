@@ -1,5 +1,6 @@
 import { setRTLEnabledValue } from "../shared/storage";
-import { containsRTL, toggleClass } from "../shared/utils";
+import { containsRTL } from "../shared/utils";
+import { toggleClass } from "../shared/dom";
 
 export function toggleRTLGlobal({ enabled }: { enabled: boolean }): void {
   toggleClass({

@@ -1,5 +1,5 @@
 import { getRTLEnabledValue } from "../../shared/storage";
-import { isHTMLElement } from "../../shared/utils";
+import { isHTMLElement } from "../../shared/dom";
 import { toggleRTLGlobal } from "./../rtl";
 import { appendRTLEnabledCheckbox } from "./rtl-toggle-setting-checkbox";
 

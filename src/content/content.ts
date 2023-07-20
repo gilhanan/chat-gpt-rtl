@@ -3,7 +3,7 @@ import {
   filterHTMLElements,
   isHTMLTextAreaElement,
   queryHTMLElements,
-} from "../shared/utils";
+} from "../shared/dom";
 import {
   toggleRTLElement,
   isRTLApplicable,
