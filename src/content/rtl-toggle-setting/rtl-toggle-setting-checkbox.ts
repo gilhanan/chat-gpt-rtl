@@ -1,4 +1,4 @@
-import { createButton, createDiv, createSpan } from "../../shared/dom/create";
+import { createButton, createDiv, createSpan } from "../../shared/dom";
 
 type SwitchInputOnChange = ({ checked }: { checked: boolean }) => void;
 
