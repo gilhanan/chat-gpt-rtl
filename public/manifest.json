@@ -3,7 +3,7 @@
   "description": "ChatGPT Right to Left (RTL) alignments. Supports Arabic, Persian, Hebrew, and more.",
   "manifest_version": 3,
   "version": "1.3",
-  "permissions": ["tabs", "storage"],
+  "permissions": ["storage"],
   "action": {
     "default_popup": "popup/popup.html",
     "default_icon": {
