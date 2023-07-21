@@ -1,7 +1,7 @@
 import { getRTLEnabledValue } from "../../shared/rtl-enabled-storage";
 import { isHTMLElement } from "../../shared/dom";
 import { toggleRTLGlobal } from "../rtl-utils";
-import { appendRTLEnabledCheckbox } from "./rtl-toggle-setting-checkbox";
+import { createRTLToggleSetting } from "../rtl-toggle-setting-checkbox";
 
 export async function initRTLEnabled(): Promise<void> {
   const enabled = await getRTLEnabledValue();
@@ -21,11 +21,12 @@ export async function initRTLEnabledCheckbox(
 
   const enabled = await getRTLEnabledValue();
 
-  appendRTLEnabledCheckbox({
-    generalSettingsPanel,
+  const rtlToggleSetting = createRTLToggleSetting({
     enabled,
     onChange: ({ checked }) => {
       toggleRTLGlobal({ enabled: checked });
     },
   });
+
+  generalSettingsPanel.append(rtlToggleSetting);
 }

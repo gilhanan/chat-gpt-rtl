@@ -47,7 +47,7 @@ function createSwitchButton({
   return button;
 }
 
-function createRTLEnabledContainer({
+export function createRTLToggleSetting({
   enabled,
   onChange,
 }: {
@@ -77,17 +77,4 @@ function createRTLEnabledContainer({
   settingContainer.appendChild(settingRow);
 
   return settingContainer;
-}
-
-export function appendRTLEnabledCheckbox({
-  generalSettingsPanel,
-  enabled,
-  onChange,
-}: {
-  generalSettingsPanel: Element;
-  enabled: boolean;
-  onChange: SwitchInputOnChange;
-}): void {
-  const switchContainer = createRTLEnabledContainer({ enabled, onChange });
-  generalSettingsPanel.append(switchContainer);
 }
