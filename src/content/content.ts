@@ -1,8 +1,14 @@
 import "./content.scss";
 import { isToggleRTLGlobalMessage } from "../shared/toggle-rtl-message";
+import { getRTLEnabledValue } from "../shared/rtl-enabled-storage";
 import { toggleRTLGlobal, applyRTLToMutations } from "./rtl-utils";
 import { observeChanges, observeChangesOnce } from "./observers";
-import { initRTLEnabled, initRTLEnabledCheckbox } from "./rtl-toggle-setting";
+import { initRTLEnabledCheckbox } from "./rtl-toggle-setting";
+
+async function initRTLEnabled(): Promise<void> {
+  const enabled = await getRTLEnabledValue();
+  toggleRTLGlobal({ enabled });
+}
 
 const mainObserverCallback: MutationCallback = (mutations) => {
   applyRTLToMutations(mutations);

@@ -3,19 +3,20 @@ import { isHTMLElement } from "../../shared/dom";
 import { toggleRTLGlobal } from "../rtl-utils";
 import { createRTLToggleSetting } from "../rtl-toggle-setting-checkbox";
 
-export async function initRTLEnabled(): Promise<void> {
-  const enabled = await getRTLEnabledValue();
-  toggleRTLGlobal({ enabled });
+function getGeneralSettingsPanel(
+  mutations: MutationRecord[],
+): Element | undefined | null {
+  return mutations
+    .flatMap(({ addedNodes }) => Array.from(addedNodes))
+    .filter(isHTMLElement)
+    .map((node) => node.querySelector('div[id$="content-General"] > div'))
+    .find(Boolean);
 }
 
 export async function initRTLEnabledCheckbox(
   mutations: MutationRecord[],
 ): Promise<void> {
-  const generalSettingsPanel = mutations
-    .flatMap(({ addedNodes }) => Array.from(addedNodes))
-    .filter(isHTMLElement)
-    .map((node) => node.querySelector('div[id$="content-General"] > div'))
-    .find(Boolean);
+  const generalSettingsPanel = getGeneralSettingsPanel(mutations);
 
   if (generalSettingsPanel == null) return;
 
