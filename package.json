@@ -7,7 +7,8 @@
     "lint-staged": "lint-staged",
     "test": "jest --config jest.config.js",
     "webpack": "webpack --config webpack/webpack.config.js",
-    "build": "npm run webpack && node zip.js",
+    "zip-dist": "node tools/zip.js",
+    "build": "npm run webpack && npm run zip-dist",
     "watch": "npm run webpack -- --watch"
   },
   "keywords": [
