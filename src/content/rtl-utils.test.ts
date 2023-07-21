@@ -1,6 +1,5 @@
 import { applyRTLToMutations, toggleRTLGlobal } from "./rtl-utils";
-
-jest.mock("../shared/rtl-enabled-storage");
+import * as rtlEnabledStorage from "../shared/rtl-enabled-storage";
 
 const RTL_CLASS = "chat-gpt-rtl";
 const RTL_ENABLED_CLASS = "chat-gpt-rtl-enabled";
@@ -102,8 +101,13 @@ describe("applyRTLToMutations", () => {
 });
 
 describe("toggleRTLGlobal", () => {
+  let setRTLEnabledValueMock: jest.SpyInstance;
+
   beforeEach(() => {
     document.body.className = "";
+    setRTLEnabledValueMock = jest
+      .spyOn(rtlEnabledStorage, "setRTLEnabledValue")
+      .mockImplementation(jest.fn());
   });
 
   it.each([
@@ -116,6 +120,7 @@ describe("toggleRTLGlobal", () => {
       expect(document.body.classList.contains(RTL_ENABLED_CLASS)).toBe(
         expected,
       );
+      expect(setRTLEnabledValueMock).toHaveBeenCalledWith(enabled);
     },
   );
 
@@ -131,6 +136,7 @@ describe("toggleRTLGlobal", () => {
       expect(document.body.classList.contains(RTL_ENABLED_CLASS)).toBe(
         expected,
       );
+      expect(setRTLEnabledValueMock).toHaveBeenCalledWith(enabled);
     },
   );
 });
