@@ -1,7 +1,7 @@
-async function getCurrentActiveTab(): Promise<chrome.tabs.Tab | undefined> {
+async function getActiveTabs(): Promise<chrome.tabs.Tab[]> {
   return await new Promise((resolve) => {
-    chrome.tabs.query({ active: true, currentWindow: true }, ([currentTab]) => {
-      resolve(currentTab);
+    chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
+      resolve(tabs);
     });
   });
 }
@@ -16,6 +16,8 @@ function sendMessageToTab<T>(
 }
 
 export async function sendMessage<T>(message: T): Promise<void> {
-  const currentTab = await getCurrentActiveTab();
-  sendMessageToTab(currentTab, message);
+  const tabs = await getActiveTabs();
+  tabs.forEach((tab) => {
+    sendMessageToTab(tab, message);
+  });
 }

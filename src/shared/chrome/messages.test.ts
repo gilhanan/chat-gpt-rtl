@@ -13,11 +13,8 @@ describe("sendMessage", () => {
     const query = jest
       .fn<ReturnType<QueryCallback>, [chrome.tabs.QueryInfo, QueryCallback]>()
       .mockImplementation(
-        (
-          { active, currentWindow }: chrome.tabs.QueryInfo,
-          queryCallback: QueryCallback,
-        ) => {
-          queryCallback(active === true && currentWindow === true ? tabs : []);
+        (queryInfo: chrome.tabs.QueryInfo, queryCallback: QueryCallback) => {
+          queryCallback(tabs);
         },
       );
 
@@ -29,27 +26,42 @@ describe("sendMessage", () => {
     } as unknown as typeof chrome;
   });
 
-  it("should send a message to the current tab", async () => {
+  it("should use chrome.tabs.query", async () => {
+    await sendMessage(message);
+
+    expect(chrome.tabs.query).toHaveBeenCalledWith(
+      { active: true, lastFocusedWindow: true },
+      expect.any(Function),
+    );
+  });
+
+  it("should send a message to a tab", async () => {
     const tab = { id: 1 } as unknown as chrome.tabs.Tab;
 
     tabs = [tab];
 
     await sendMessage(message);
 
-    expect(chrome.tabs.query).toHaveBeenCalledWith(
-      { active: true, currentWindow: true },
-      expect.any(Function),
-    );
+    expect(chrome.tabs.sendMessage).toHaveBeenCalledTimes(tabs.length);
     expect(chrome.tabs.sendMessage).toHaveBeenCalledWith(tab.id, message);
+  });
+
+  it("should send a message to multiple tabs", async () => {
+    const firstTab = { id: 1 } as unknown as chrome.tabs.Tab;
+    const secondTab = { id: 2 } as unknown as chrome.tabs.Tab;
+
+    tabs = [firstTab, secondTab];
+
+    await sendMessage(message);
+
+    expect(chrome.tabs.sendMessage).toHaveBeenCalledTimes(tabs.length);
+    expect(chrome.tabs.sendMessage).toHaveBeenCalledWith(firstTab.id, message);
+    expect(chrome.tabs.sendMessage).toHaveBeenCalledWith(secondTab.id, message);
   });
 
   it("should not send a message if there is no current tab", () => {
     void sendMessage(message);
 
-    expect(chrome.tabs.query).toHaveBeenCalledWith(
-      { active: true, currentWindow: true },
-      expect.any(Function),
-    );
     expect(chrome.tabs.sendMessage).not.toHaveBeenCalled();
   });
 });
