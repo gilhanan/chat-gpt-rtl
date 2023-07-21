@@ -1,53 +1,8 @@
 import "./content.scss";
-import {
-  filterHTMLElements,
-  isHTMLTextAreaElement,
-  queryHTMLElements,
-} from "../shared/dom";
-import {
-  toggleRTLElement,
-  isRTLApplicable,
-  enableRTLElement,
-  toggleRTLGlobal,
-} from "./rtl";
+import { isToggleRTLGlobalMessage } from "../shared/toggle-rtl-message";
+import { toggleRTLGlobal, applyRTLToMutations } from "./rtl-utils";
 import { observeChanges, observeChangesOnce } from "./observers";
 import { initRTLEnabled, initRTLEnabledCheckbox } from "./rtl-toggle-setting";
-import { isToggleRTLGlobalMessage } from "../shared/toggle-rtl-message";
-
-function applyRTLToChildrens(element: HTMLElement): void {
-  queryHTMLElements({
-    element,
-    selector: "p, ol, ul, div:not(:has(*))",
-  })
-    .filter(({ innerText }) => isRTLApplicable(innerText))
-    .forEach(enableRTLElement);
-}
-
-function applyRTLToMutations(mutations: MutationRecord[]): void {
-  mutations.forEach(({ type, addedNodes, target }) => {
-    const { nodeType, parentElement } = target;
-
-    if (type === "childList") {
-      if (isHTMLTextAreaElement(target)) {
-        toggleRTLElement({
-          element: target,
-          enabled: isRTLApplicable(target.value),
-        });
-      } else {
-        filterHTMLElements(addedNodes).forEach(applyRTLToChildrens);
-      }
-    }
-
-    if (
-      type === "characterData" &&
-      nodeType === Node.TEXT_NODE &&
-      parentElement !== null &&
-      isRTLApplicable(parentElement.innerText)
-    ) {
-      enableRTLElement(parentElement);
-    }
-  });
-}
 
 const mainObserverCallback: MutationCallback = (mutations) => {
   applyRTLToMutations(mutations);

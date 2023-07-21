@@ -1,6 +1,6 @@
 import { getRTLEnabledValue } from "../../shared/rtl-enabled-storage";
 import { isHTMLElement } from "../../shared/dom";
-import { toggleRTLGlobal } from "./../rtl";
+import { toggleRTLGlobal } from "../rtl-utils";
 import { appendRTLEnabledCheckbox } from "./rtl-toggle-setting-checkbox";
 
 export async function initRTLEnabled(): Promise<void> {
