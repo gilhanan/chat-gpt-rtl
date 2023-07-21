@@ -1,7 +1,8 @@
 import { setRTLEnabledValue } from "../shared/rtl-enabled-storage";
 import { containsRTL } from "../shared/utils";
 import {
-  filterHTMLElements,
+  isHTMLDivElement,
+  isHTMLElement,
   isHTMLTextAreaElement,
   queryHTMLElements,
   toggleClass,
@@ -28,14 +29,17 @@ function enableRTLElement(element: HTMLElement): void {
 function applyRTLToChildrens(element: HTMLElement): void {
   queryHTMLElements({
     element,
-    selector: "p, ol, ul, div:not(:has(*))",
+    selector: "p, ol, ul, div",
   })
-    .filter(({ innerText }) => isRTLApplicable(innerText))
+    .filter(
+      (element) => !isHTMLDivElement(element) || element.children.length === 0,
+    )
+    .filter(({ textContent }) => isRTLApplicable(textContent ?? ""))
     .forEach(enableRTLElement);
 }
 
 export function applyRTLToMutations(mutations: MutationRecord[]): void {
-  mutations.forEach(({ type, addedNodes, target }) => {
+  mutations.forEach(({ type, target }) => {
     const { nodeType, parentElement } = target;
 
     if (type === "childList") {
@@ -44,8 +48,8 @@ export function applyRTLToMutations(mutations: MutationRecord[]): void {
           element: target,
           enabled: isRTLApplicable(target.value),
         });
-      } else {
-        filterHTMLElements(addedNodes).forEach(applyRTLToChildrens);
+      } else if (isHTMLElement(target)) {
+        applyRTLToChildrens(target);
       }
     }
 
@@ -53,7 +57,7 @@ export function applyRTLToMutations(mutations: MutationRecord[]): void {
       type === "characterData" &&
       nodeType === Node.TEXT_NODE &&
       parentElement !== null &&
-      isRTLApplicable(parentElement.innerText)
+      isRTLApplicable(parentElement.textContent ?? "")
     ) {
       enableRTLElement(parentElement);
     }
