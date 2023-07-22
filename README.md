@@ -25,7 +25,7 @@ You can build the extension by running the following command:
 npm run build
 ```
 
-This command will generate a dist directory with the built extension and a dist.zip file that you can upload to the Chrome Web Store.
+This command will generate a `dist` directory with the built extension and a `extension.zip` file that you can upload to the Chrome Web Store.
 
 ## Developing the Extension
 
