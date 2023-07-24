@@ -10,7 +10,7 @@ export function createHeader(): HTMLDivElement {
   const description = createDiv({
     className: "mt-2 text-sm text-gray-500",
     textContent:
-      "Automatically detects and switches to right-to-left text direction in chat inputs.",
+      "Automatically detects and align right-to-left texts in ChatGPT.",
   });
 
   const container = createDiv({

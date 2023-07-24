@@ -44,12 +44,12 @@ describe("Popup", () => {
 
     await expect(page).toMatchTextContent("ChatGPT RTL");
     await expect(page).toMatchTextContent(
-      "Automatically detects and switches to right-to-left text direction in chat inputs.",
+      "Automatically detects and align right-to-left texts in ChatGPT.",
     );
     await expect(page).toMatchTextContent("Settings");
-    await expect(page).toMatchTextContent("Enable automatic RTL detection");
+    await expect(page).toMatchTextContent("Enable RTL texts auto align");
     await expect(page).toMatchTextContent(
-      "Enable or disable automatic right-to-left text detection.",
+      "Enable or disable automatically right-to-left texts detection.",
     );
     await expect(page).toMatchElement(inputSelector);
 

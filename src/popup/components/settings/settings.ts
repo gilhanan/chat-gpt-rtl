@@ -15,7 +15,7 @@ async function createToggleSwitchSettingRow({
   });
 
   const toggleSwitch = createToggleSwitch({
-    textContent: "Enable automatic RTL detection",
+    textContent: "Enable RTL texts auto align",
     checked: enabled,
     onChanged: ({ checked }) => {
       onChanged({ checked });
@@ -24,7 +24,8 @@ async function createToggleSwitchSettingRow({
 
   const toggleSwitchDescription = createDiv({
     className: "mt-2 text-xs text-gray-500",
-    textContent: "Enable or disable automatic right-to-left text detection.",
+    textContent:
+      "Enable or disable automatically right-to-left texts detection.",
   });
 
   settingRow.append(toggleSwitch, toggleSwitchDescription);
