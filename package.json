@@ -4,6 +4,7 @@
   "description": "RTL support for ChatGPT. Auto-detects RTL in real-time for languages like Arabic, Hebrew, and more.",
   "scripts": {
     "prepare": "husky install",
+    "lint": "eslint --ext .ts ./",
     "lint-staged": "lint-staged",
     "test": "jest --config jest.config.js",
     "test:e2e": "npm run extension-id && jest --config jest.e2e.config.js e2e",
