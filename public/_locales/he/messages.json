@@ -1,0 +1,20 @@
+{
+  "extensionDescription": {
+    "message": "עימוד ויישור של טקסט בעברית בצורה אוטומטית ב-ChatGPT."
+  },
+  "headerTitle": {
+    "message": "ChatGPT מימין-לשמאל"
+  },
+  "headerDescription": {
+    "message": "עימוד ויישור של טקסט בעברית בצורה אוטומטית ב-ChatGPT."
+  },
+  "settings": {
+    "message": "הגדרות"
+  },
+  "toggleSwitchLabel": {
+    "message": "הפעל יישור אוטמוטי של עברית"
+  },
+  "toggleSwitchDescription": {
+    "message": "הפעל או כבה יישור אוטומטי של טקסט בעברית מימין לשמאל."
+  }
+}
