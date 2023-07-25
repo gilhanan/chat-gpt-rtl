@@ -16,7 +16,7 @@ describe("createSettingsContainer", () => {
 
       const heading = container.querySelector("h3");
       expect(heading).toBeDefined();
-      expect(heading?.textContent).toBe("Settings");
+      expect(heading?.textContent).toBe("settings");
 
       const toggleSwitch = container.querySelector(
         'input[type="checkbox"]',

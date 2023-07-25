@@ -24,3 +24,9 @@ const rtlRegex = new RegExp(
 export function containsRTL(text: string): boolean {
   return rtlRegex.test(text);
 }
+
+export function getDirection(): "rtl" | "ltr" {
+  const uiLanguage = chrome.i18n.getUILanguage();
+
+  return ["he"].includes(uiLanguage) ? "rtl" : "ltr";
+}

@@ -4,13 +4,12 @@ export function createHeader(): HTMLDivElement {
   const title = createHeading({
     tagName: "h2",
     className: "text-xl font-medium",
-    textContent: "ChatGPT RTL",
+    textContent: chrome.i18n.getMessage("headerTitle"),
   });
 
   const description = createDiv({
     className: "mt-2 text-sm text-gray-500",
-    textContent:
-      "Automatically detects and align right-to-left texts in ChatGPT.",
+    textContent: chrome.i18n.getMessage("headerDescription"),
   });
 
   const container = createDiv({

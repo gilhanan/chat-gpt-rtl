@@ -15,7 +15,7 @@ async function createToggleSwitchSettingRow({
   });
 
   const toggleSwitch = createToggleSwitch({
-    textContent: "Enable RTL texts auto align",
+    textContent: chrome.i18n.getMessage("toggleSwitchLabel"),
     checked: enabled,
     onChanged: ({ checked }) => {
       onChanged({ checked });
@@ -24,8 +24,7 @@ async function createToggleSwitchSettingRow({
 
   const toggleSwitchDescription = createDiv({
     className: "mt-2 text-xs text-gray-500",
-    textContent:
-      "Enable or disable automatically right-to-left texts detection.",
+    textContent: chrome.i18n.getMessage("toggleSwitchDescription"),
   });
 
   settingRow.append(toggleSwitch, toggleSwitchDescription);
@@ -45,7 +44,7 @@ export async function createSettingsContainer({
   const settingsHeading = createHeading({
     tagName: "h3",
     className: "p-3 text-lg font-medium border-b border-black/10",
-    textContent: "Settings",
+    textContent: chrome.i18n.getMessage("settings"),
   });
 
   const toggleSwitchSettingRow = await createToggleSwitchSettingRow({

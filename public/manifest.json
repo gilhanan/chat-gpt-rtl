@@ -1,6 +1,7 @@
 {
   "name": "ChatGPT RTL",
-  "description": "ChatGPT auto right-to-left (RTL) alignments. Supports Arabic, Persian, Hebrew, and more.",
+  "description": "__MSG_extensionDescription__",
+  "default_locale": "en",
   "manifest_version": 3,
   "version": "1.3",
   "permissions": ["storage"],

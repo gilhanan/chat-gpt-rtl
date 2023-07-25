@@ -1,0 +1,21 @@
+{
+  "extensionDescription": {
+    "message": "ChatGPT auto right-to-left alignments. Supports Arabic, Persian, Hebrew, and more."
+  },
+  "headerTitle": {
+    "message": "ChatGPT RTL"
+  },
+  "headerDescription": {
+    "message": "Automatically detects and align right-to-left texts in ChatGPT."
+  },
+  "settings": {
+    "message": "Settings"
+  },
+  "toggleSwitchLabel": {
+    "message": "Enable RTL texts auto align"
+  },
+  "toggleSwitchDescription": {
+    "message": "Enable or disable automatically right-to-left texts detection."
+  }
+}
+
