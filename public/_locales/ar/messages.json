@@ -1,0 +1,20 @@
+{
+  "extensionDescription": {
+    "message": "ترقيم الصفحات ومحاذاة النص العربي تلقائيًا في ChatGPT."
+  },
+  "headerTitle": {
+    "message": "ChatGPT من اليمين الى اليسار"
+  },
+  "headerDescription": {
+    "message": "ترقيم الصفحات ومحاذاة النص العربي تلقائيًا في ChatGPT."
+  },
+  "settings": {
+    "message": "إعدادات"
+  },
+  "toggleSwitchLabel": {
+    "message": "تفعيل المحاذاة التلقائية للغة العربية"
+  },
+  "toggleSwitchDescription": {
+    "message": "تمكين أو تعطيل المحاذاة التلقائية من اليمين إلى اليسار للنص العربي."
+  }
+}

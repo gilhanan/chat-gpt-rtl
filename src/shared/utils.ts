@@ -28,5 +28,5 @@ export function containsRTL(text: string): boolean {
 export function getDirection(): "rtl" | "ltr" {
   const uiLanguage = chrome.i18n.getUILanguage();
 
-  return ["he"].includes(uiLanguage) ? "rtl" : "ltr";
+  return ["he", "ar"].includes(uiLanguage) ? "rtl" : "ltr";
 }
