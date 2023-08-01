@@ -66,7 +66,7 @@ function generateExtensionId({ publicDer }: { publicDer: Buffer }): string {
     );
 }
 
-async function main(): Promise<void> {
+export async function signExtensionId(): Promise<string> {
   const privateKey = generatePrivateKey();
 
   const publicKey = generatePublicKey(privateKey);
@@ -91,10 +91,6 @@ async function main(): Promise<void> {
     filePath: manifestPath,
     data,
   });
-}
 
-async function runMain(): Promise<void> {
-  await main();
+  return id;
 }
-
-void runMain();
