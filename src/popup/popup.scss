@@ -1,4 +1,6 @@
-@import "../shared/styles.scss";
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
 
 body {
   width: 300px;
