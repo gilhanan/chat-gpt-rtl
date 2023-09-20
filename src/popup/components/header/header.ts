@@ -1,4 +1,4 @@
-import { createHeading, createDiv } from "../../../shared/dom";
+import { createHeading, createDiv, createAnchor } from "../../../shared/dom";
 
 export function createHeader(): HTMLDivElement {
   const title = createHeading({
@@ -9,8 +9,19 @@ export function createHeader(): HTMLDivElement {
 
   const description = createDiv({
     className: "mt-2 text-sm text-gray-500",
-    textContent: chrome.i18n.getMessage("headerDescription"),
   });
+
+  const descriptionLink = createAnchor({
+    className: "underline text-blue-600 hover:text-blue-800",
+    href: "https://chat.openai.com/",
+    textContent: "ChatGPT",
+  });
+
+  description.append(
+    chrome.i18n.getMessage("headerDescription"),
+    descriptionLink,
+    ".",
+  );
 
   const container = createDiv({
     className: "p-3 border-b border-black/10",

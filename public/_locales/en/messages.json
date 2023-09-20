@@ -6,7 +6,7 @@
     "message": "ChatGPT RTL"
   },
   "headerDescription": {
-    "message": "Automatically detects and align right-to-left texts in ChatGPT."
+    "message": "Automatically detects and align right-to-left texts in "
   },
   "settings": {
     "message": "Settings"

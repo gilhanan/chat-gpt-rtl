@@ -59,6 +59,25 @@ export function createSpan({
   return span;
 }
 
+export function createAnchor({
+  className,
+  href,
+  target = "_blank",
+  textContent,
+}: {
+  className: string;
+  href: string;
+  target?: "_blank" | "_self";
+  textContent: string;
+}): HTMLAnchorElement {
+  const anchor = document.createElement("a");
+  anchor.className = className;
+  anchor.href = href;
+  anchor.target = target;
+  anchor.textContent = textContent;
+  return anchor;
+}
+
 export function createButton({
   className,
   value,
