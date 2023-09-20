@@ -8,7 +8,7 @@ export const test = base.extend<{
   context: BrowserContext;
   extensionId: string;
 }>({
-  context: async ({}, use) => {
+  context: async ({ locale }, use) => {
     await signExtensionId();
 
     const pathToExtension = path.join(__dirname, "../dist");
@@ -17,6 +17,7 @@ export const test = base.extend<{
       args: [
         `--disable-extensions-except=${pathToExtension}`,
         `--load-extension=${pathToExtension}`,
+        `--lang=${locale as string}`,
       ],
     });
     await use(context);
