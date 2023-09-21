@@ -29,6 +29,23 @@ test.describe("Toggle switch", () => {
   });
 });
 
+test.describe("ChatGPT link", () => {
+  test("Opens in a new tab", async ({ context, page, extensionId }) => {
+    await page.goto(`chrome-extension://${extensionId}/popup/popup.html`);
+
+    const pagePromise = context.waitForEvent("page");
+
+    const link = page.getByRole("link", { name: "ChatGPT" });
+
+    await link.click();
+
+    const newPage = await pagePromise;
+    await newPage.waitForLoadState();
+
+    expect(newPage.url()).toContain("https://chat.openai.com/");
+  });
+});
+
 test.describe("English", () => {
   test.use({
     locale: "en",
