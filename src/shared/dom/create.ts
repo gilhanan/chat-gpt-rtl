@@ -62,19 +62,25 @@ export function createSpan({
 export function createAnchor({
   className,
   href,
-  target = "_blank",
   textContent,
+  ariaLabel,
+  target = "_blank",
+  rel = "noopener noreferrer",
 }: {
   className: string;
   href: string;
-  target?: "_blank" | "_self";
   textContent: string;
+  ariaLabel: string;
+  target?: "_blank" | "_self";
+  rel?: "noopener noreferrer";
 }): HTMLAnchorElement {
   const anchor = document.createElement("a");
   anchor.className = className;
   anchor.href = href;
-  anchor.target = target;
   anchor.textContent = textContent;
+  anchor.ariaLabel = ariaLabel;
+  anchor.target = target;
+  anchor.rel = rel;
   return anchor;
 }
 

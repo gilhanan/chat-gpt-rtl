@@ -8,6 +8,9 @@
   "headerDescription": {
     "message": "Automatically detects and align right-to-left texts in "
   },
+  "chatGPTLinkAriaLabel": {
+    "message": "Open ChatGPT in a new tab"
+  },
   "settings": {
     "message": "Settings"
   },
@@ -18,4 +21,3 @@
     "message": "Enable or disable automatically right-to-left texts detection."
   }
 }
-

@@ -15,6 +15,7 @@ export function createHeader(): HTMLDivElement {
     className: "underline text-blue-600 hover:text-blue-800",
     href: "https://chat.openai.com/",
     textContent: "ChatGPT",
+    ariaLabel: chrome.i18n.getMessage("chatGPTLinkAriaLabel"),
   });
 
   description.append(

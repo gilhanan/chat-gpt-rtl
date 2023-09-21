@@ -8,6 +8,9 @@
   "headerDescription": {
     "message": "עימוד ויישור של טקסט בעברית בצורה אוטומטית ב-"
   },
+  "chatGPTLinkAriaLabel": {
+    "message": "פתח את ChatGPT בכרטיסייה חדשה"
+  },
   "settings": {
     "message": "הגדרות"
   },

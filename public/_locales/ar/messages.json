@@ -8,6 +8,9 @@
   "headerDescription": {
     "message": "ترقيم الصفحات ومحاذاة النص العربي تلقائيًا في "
   },
+  "chatGPTLinkAriaLabel": {
+    "message": "افتح ChatGPT في علامة تبويب جديدة"
+  },
   "settings": {
     "message": "إعدادات"
   },
