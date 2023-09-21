@@ -1,5 +1,8 @@
 const observers = new WeakMap();
 
+export type ObserveChanges = typeof observeChanges;
+export type ObserveChangesOnce = typeof observeChangesOnce;
+
 export function observeChanges({
   target,
   options,

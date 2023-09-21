@@ -2,7 +2,7 @@ import { sendMessage } from "./chrome";
 
 const action = "ToggleRTLGlobal";
 
-interface ToggleRTLGlobalMessage {
+export interface ToggleRTLGlobalMessage {
   action: typeof action;
   enabled: boolean;
 }
