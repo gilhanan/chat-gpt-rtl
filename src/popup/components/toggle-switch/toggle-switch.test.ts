@@ -28,7 +28,7 @@ describe("createToggleSwitch", () => {
     });
 
     const input = toggleSwitch.querySelector(
-      ".switch-container > label > input",
+      "#switch-container-input",
     ) as HTMLInputElement;
 
     expect(input.checked).toBe(checked);
@@ -56,7 +56,7 @@ describe("createToggleSwitch", () => {
     });
 
     const input = toggleSwitch.querySelector(
-      ".switch-container > label > input",
+      "#switch-container-input",
     ) as HTMLInputElement;
 
     input.click();

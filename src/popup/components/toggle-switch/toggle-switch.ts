@@ -6,7 +6,7 @@ import {
   createLabel,
 } from "../../../shared/dom";
 
-const inputId = "switch-container";
+const inputId = "switch-container-input";
 
 export function createToggleSwitch({
   checked,
