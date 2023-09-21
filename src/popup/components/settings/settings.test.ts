@@ -1,6 +1,43 @@
 import { createSettingsContainer } from "./settings";
 
 describe("createSettingsContainer", () => {
+  describe("rendering", () => {
+    let settingsContainer: HTMLDivElement;
+
+    beforeEach(async () => {
+      settingsContainer = await createSettingsContainer({
+        enabled: true,
+        onChanged: jest.fn(),
+      });
+    });
+
+    it("should render title", async () => {
+      const { textContent } =
+        settingsContainer.getElementsByClassName("text-lg")[0];
+      expect(textContent).toBe("settings");
+    });
+
+    it("should render toggle switch", async () => {
+      const toggleSwitch = settingsContainer.querySelector(
+        'input[type="checkbox"]',
+      ) as HTMLInputElement;
+
+      expect(toggleSwitch).toBeDefined();
+    });
+
+    it("should render toggle switch label", async () => {
+      const { textContent } =
+        settingsContainer.getElementsByClassName("switch-container")[0];
+      expect(textContent).toBe("toggleSwitchLabel");
+    });
+
+    it("should render toggle switch description", async () => {
+      const { textContent } =
+        settingsContainer.getElementsByClassName("text-xs")[0];
+      expect(textContent).toBe("toggleSwitchDescription");
+    });
+  });
+
   it.each([
     { initialState: true, expectedState: true },
     { initialState: false, expectedState: false },
@@ -13,10 +50,6 @@ describe("createSettingsContainer", () => {
       });
 
       expect(container).toBeDefined();
-
-      const heading = container.querySelector("h3");
-      expect(heading).toBeDefined();
-      expect(heading?.textContent).toBe("settings");
 
       const toggleSwitch = container.querySelector(
         'input[type="checkbox"]',
