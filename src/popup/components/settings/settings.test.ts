@@ -1,11 +1,11 @@
-import { createSettingsContainer } from "./settings";
+import { createSettingsContainer } from "./";
 
 describe("createSettingsContainer", () => {
   describe("rendering", () => {
     let settingsContainer: HTMLDivElement;
 
-    beforeEach(async () => {
-      settingsContainer = await createSettingsContainer({
+    beforeEach(() => {
+      settingsContainer = createSettingsContainer({
         enabled: true,
         onChanged: jest.fn(),
       });
@@ -43,8 +43,8 @@ describe("createSettingsContainer", () => {
     { initialState: false, expectedState: false },
   ])(
     "should create a settings container with a heading and a toggle switch setting row",
-    async ({ initialState, expectedState }) => {
-      const container = await createSettingsContainer({
+    ({ initialState, expectedState }) => {
+      const container = createSettingsContainer({
         enabled: initialState,
         onChanged: jest.fn(),
       });
@@ -65,10 +65,10 @@ describe("createSettingsContainer", () => {
     { initialState: false, expectedState: true },
   ])(
     "should call the onChanged callback when the toggle switch is changed",
-    async ({ initialState, expectedState }) => {
+    ({ initialState, expectedState }) => {
       const onChanged = jest.fn();
 
-      const container = await createSettingsContainer({
+      const container = createSettingsContainer({
         enabled: initialState,
         onChanged,
       });

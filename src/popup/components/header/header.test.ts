@@ -1,4 +1,4 @@
-import { createHeader } from "./header";
+import { createHeader } from "./";
 
 describe("createHeader", () => {
   describe("rendering", () => {

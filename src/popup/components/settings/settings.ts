@@ -3,13 +3,13 @@ import { createToggleSwitch } from "../toggle-switch";
 
 type OnChanged = (event: { checked: boolean }) => void;
 
-async function createToggleSwitchSettingRow({
+function createToggleSwitchSettingRow({
   enabled,
   onChanged,
 }: {
   enabled: boolean;
   onChanged: OnChanged;
-}): Promise<HTMLDivElement> {
+}): HTMLDivElement {
   const settingRow = createDiv({
     className: "p-3",
   });
@@ -32,13 +32,13 @@ async function createToggleSwitchSettingRow({
   return settingRow;
 }
 
-export async function createSettingsContainer({
+export function createSettingsContainer({
   enabled,
   onChanged,
 }: {
   enabled: boolean;
   onChanged: OnChanged;
-}): Promise<HTMLDivElement> {
+}): HTMLDivElement {
   const container = createDiv({});
 
   const settingsHeading = createHeading({
@@ -47,7 +47,7 @@ export async function createSettingsContainer({
     textContent: chrome.i18n.getMessage("settings"),
   });
 
-  const toggleSwitchSettingRow = await createToggleSwitchSettingRow({
+  const toggleSwitchSettingRow = createToggleSwitchSettingRow({
     enabled,
     onChanged,
   });

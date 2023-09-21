@@ -15,7 +15,7 @@ async function render(): Promise<void> {
 
   const enabled = await getRTLEnabledValue();
 
-  const settingsContainer = await createSettingsContainer({
+  const settingsContainer = createSettingsContainer({
     enabled,
     onChanged: ({ checked }) => {
       void sendToggleRTLGlobalMessage({
