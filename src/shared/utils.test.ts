@@ -1,4 +1,4 @@
-import { containsRTL } from "./utils";
+import { containsRTL, getDirection } from "./utils";
 
 describe("containsRTL", () => {
   it("should return true for Arabic text", () => {
@@ -29,5 +29,16 @@ describe("containsRTL", () => {
   it("should return false for empty string", () => {
     const text = "";
     expect(containsRTL(text)).toBe(false);
+  });
+});
+
+describe("getDirection", () => {
+  it.each([
+    ["he", "rtl"],
+    ["ar", "rtl"],
+    ["en", "ltr"],
+  ])("should return '%s' for %s UI language", (language, expectedDirection) => {
+    (chrome.i18n.getUILanguage as jest.Mock).mockReturnValue(language);
+    expect(getDirection()).toBe(expectedDirection);
   });
 });
