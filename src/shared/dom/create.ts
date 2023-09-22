@@ -16,11 +16,11 @@ export function createLabel({
 
 export function createHeading({
   tagName,
-  className = "",
+  className,
   textContent,
 }: {
   tagName: "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
-  className?: string;
+  className: string;
   textContent: string;
 }): HTMLHeadingElement {
   const heading = document.createElement(tagName);
