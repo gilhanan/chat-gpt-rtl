@@ -1,7 +1,8 @@
-const path = require("path");
-const CopyPlugin = require("copy-webpack-plugin");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+import path from "path";
+import type webpack from "webpack";
+import CopyPlugin from "copy-webpack-plugin";
+import MiniCssExtractPlugin from "mini-css-extract-plugin";
+import { CleanWebpackPlugin } from "clean-webpack-plugin";
 
 const srcFolder = "src";
 const content = "content";
@@ -9,7 +10,7 @@ const popup = "popup";
 
 const src = path.resolve(__dirname, "..", srcFolder);
 
-module.exports = {
+const config: webpack.Configuration = {
   mode: "production",
   entry: {
     [`${content}/${content}`]: path.resolve(src, content, `${content}.ts`),
@@ -57,3 +58,5 @@ module.exports = {
     }),
   ],
 };
+
+export default config;

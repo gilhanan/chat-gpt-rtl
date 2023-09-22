@@ -8,7 +8,7 @@
     "lint-staged": "lint-staged",
     "test": "jest --config jest.config.ts",
     "test:e2e": "playwright test",
-    "webpack": "webpack --config webpack/webpack.config.js",
+    "webpack": "webpack --config webpack/webpack.config.ts",
     "zip": "ts-node --project=tools/tsconfig.json tools/zip.ts",
     "build": "npm run webpack && npm run zip",
     "watch": "npm run webpack -- --watch"
@@ -42,6 +42,8 @@
     "@types/archiver": "^5.3.2",
     "@types/chrome": "^0.0.241",
     "@types/jest": "^29.5.3",
+    "@types/node": "^20.6.3",
+    "@types/webpack": "^5.28.2",
     "archiver": "^5.3.1",
     "autoprefixer": "^10.4.14",
     "clean-webpack-plugin": "^4.0.0",
