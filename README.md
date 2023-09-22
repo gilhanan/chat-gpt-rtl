@@ -1,3 +1,5 @@
+[![Jest coverage](https://img.shields.io/badge/dynamic/json?label=Coverage&query=$.total.lines.pct&suffix=%&url=https://gilhanan.github.io/chat-gpt-rtl/coverage/coverage-summary.json&color=green)](https://gilhanan.github.io/chat-gpt-rtl/coverage/lcov-report)
+
 # ChatGPT RTL Chrome Extension
 
 This is a Chrome extension designed to enhance the usability of ChatGPT for users who communicate using right-to-left (RTL) scripts. The extension automatically detects RTL characters and adjusts the direction of the DOM elements accordingly, providing a seamless and intuitive interface for RTL languages. Ideal for users who interact with languages like Arabic, Hebrew, Persian, Urdu, and others that require RTL orientation.
@@ -10,9 +12,11 @@ This is a Chrome extension designed to enhance the usability of ChatGPT for user
 <summary> <strong>Expand</strong> </summary>
 
 ### Arabic
+
 <img src="./documentation/screenshots/Arabic/text/Text.png" alt="drawing" width="640"/>
 
 ### Hebrew
+
 <img src="./documentation/screenshots/Hebrew/text/Text.png" alt="drawing" width="640"/>
 
 </details>
@@ -20,7 +24,6 @@ This is a Chrome extension designed to enhance the usability of ChatGPT for user
 ## How to install
 
 You can install it from [Chrome Web Store](https://chrome.google.com/webstore/detail/chatgpt-rtl/nabcbpmmefiigmjpopfciegmlgihkofd) or [Microsoft Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/chatgpt-rtl/nanhglhndgcjhjcbfimjfopabdakdpmb)
-
 
 ## Getting Started
 

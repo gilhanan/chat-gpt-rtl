@@ -3,6 +3,7 @@ import type { Config } from "jest";
 const config: Config = {
   collectCoverage: true,
   collectCoverageFrom: ["src/**/*.{ts,js}"],
+  coverageReporters: ["clover", "json", "json-summary", "lcov", "text"],
   coverageThreshold: {
     global: {
       branches: 100,
