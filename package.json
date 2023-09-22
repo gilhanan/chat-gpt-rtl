@@ -6,7 +6,7 @@
     "prepare": "husky install",
     "lint": "eslint --ext .ts ./",
     "lint-staged": "lint-staged",
-    "test": "jest --config jest.config.js",
+    "test": "jest --config jest.config.ts",
     "test:e2e": "playwright test",
     "webpack": "webpack --config webpack/webpack.config.js",
     "zip": "ts-node --project=tools/tsconfig.json tools/zip.ts",

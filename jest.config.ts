@@ -1,4 +1,6 @@
-module.exports = {
+import type { Config } from "jest";
+
+const config: Config = {
   collectCoverage: true,
   collectCoverageFrom: ["src/**/*.{ts,js}"],
   coverageThreshold: {
@@ -11,9 +13,11 @@ module.exports = {
   },
   preset: "ts-jest",
   testEnvironment: "jsdom",
-  setupFiles: ["./jest.setup.js"],
+  setupFiles: ["./jest.setup.ts"],
   moduleNameMapper: {
-    "\\.scss$": "<rootDir>/__mocks__/styleMock.js",
+    "\\.scss$": "<rootDir>/__mocks__/styleMock.ts",
   },
   testMatch: ["**/src/**/*.test.ts"],
 };
+
+export default config;
