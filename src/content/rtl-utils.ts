@@ -8,8 +8,8 @@ import {
   toggleClass,
 } from "../shared/dom";
 
-function isRTLApplicable(text: string): boolean {
-  return Boolean(text) && containsRTL(text);
+function isRTLApplicable(text: string | null): boolean {
+  return !!(text && containsRTL(text));
 }
 
 function toggleRTLElement({
@@ -34,7 +34,7 @@ function applyRTLToChildrens(element: HTMLElement): void {
     .filter(
       (element) => !isHTMLDivElement(element) || element.children.length === 0,
     )
-    .filter(({ textContent }) => isRTLApplicable(textContent ?? ""))
+    .filter(({ textContent }) => isRTLApplicable(textContent))
     .forEach(enableRTLElement);
 }
 
@@ -57,7 +57,7 @@ export function applyRTLToMutations(mutations: MutationRecord[]): void {
       type === "characterData" &&
       nodeType === Node.TEXT_NODE &&
       parentElement !== null &&
-      isRTLApplicable(parentElement.textContent ?? "")
+      isRTLApplicable(parentElement.textContent)
     ) {
       enableRTLElement(parentElement);
     }
