@@ -1,4 +1,5 @@
 [![Jest coverage](https://img.shields.io/badge/dynamic/json?label=Coverage&query=$.total.lines.pct&suffix=%&url=https://gilhanan.github.io/chat-gpt-rtl/coverage/coverage-summary.json&color=green)](https://gilhanan.github.io/chat-gpt-rtl/coverage/lcov-report)
+[![Playwright report](https://img.shields.io/badge/E2E%20tests-pass-green)](https://gilhanan.github.io/chat-gpt-rtl/playwright-report)
 
 # ChatGPT RTL Chrome Extension
 

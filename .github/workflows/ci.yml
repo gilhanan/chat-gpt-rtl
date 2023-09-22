@@ -35,20 +35,6 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v2
 
-      - name: Prepare coverage artifacts for upload
-        run: |
-          mkdir -p gh_page/coverage
-          cp -r ./coverage/lcov-report gh_page/coverage/
-          cp ./coverage/coverage-summary.json gh_page/coverage/
-
-      - name: Upload coverage report
-        uses: actions/upload-pages-artifact@v1
-        with:
-          path: "./gh_page"
-
-      - name: Deploy coverage report to GitHub Pages
-        uses: actions/deploy-pages@v1
-
       - name: Build
         run: npm run build
 
@@ -56,14 +42,37 @@ jobs:
         run: npx playwright install --with-deps
 
       - name: Run E2E tests
-        run: xvfb-run npm run test:e2e
+        id: e2e_tests
+        run: |
+          echo "status=failed" >> $GITHUB_OUTPUT
+          xvfb-run npm run test:e2e
+          echo "status=success" >> $GITHUB_OUTPUT
+        continue-on-error: true
 
-      - name: Upload E2E report
-        uses: actions/upload-artifact@v3
+      - name: Prepare coverage artifacts for upload
+        run: |
+          mkdir -p gh_page/coverage
+          cp -r ./coverage/lcov-report gh_page/coverage/
+          cp ./coverage/coverage-summary.json gh_page/coverage/
+
+      - name: Prepare Playwright report artifacts for upload
+        run: |
+          mkdir -p gh_page/playwright-report
+          cp -r ./playwright-report/* gh_page/playwright-report/
+
+      - name: Upload GitHub Pages
+        uses: actions/upload-pages-artifact@v1
         with:
-          name: playwright-report
-          path: playwright-report/
-          retention-days: 30
+          path: "./gh_page"
+
+      - name: Deploy GitHub Pages
+        uses: actions/deploy-pages@v1
+
+      - name: Check E2E test result
+        run: |
+          if [ "${{ steps.e2e_tests.outputs.status }}" == "failed" ]; then
+            exit 1
+          fi
 
       - name: Upload extension
         uses: actions/upload-artifact@v3
