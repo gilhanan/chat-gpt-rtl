@@ -59,8 +59,28 @@ describe("sendMessage", () => {
     expect(chrome.tabs.sendMessage).toHaveBeenCalledWith(secondTab.id, message);
   });
 
-  it("should not send a message if there is no current tab", () => {
-    void sendMessage(message);
+  it("should not send a message if there is no current tab", async () => {
+    await sendMessage(message);
+
+    expect(chrome.tabs.sendMessage).not.toHaveBeenCalled();
+  });
+
+  it("should not send a message if tab is undefined", async () => {
+    const tab = null as unknown as chrome.tabs.Tab;
+
+    tabs = [tab];
+
+    await sendMessage(message);
+
+    expect(chrome.tabs.sendMessage).not.toHaveBeenCalled();
+  });
+
+  it("should not send a message if tab's id is undefined", async () => {
+    const tab = { id: undefined } as unknown as chrome.tabs.Tab;
+
+    tabs = [tab];
+
+    await sendMessage(message);
 
     expect(chrome.tabs.sendMessage).not.toHaveBeenCalled();
   });
