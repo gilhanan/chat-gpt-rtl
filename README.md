@@ -1,5 +1,6 @@
-[![Jest coverage](https://img.shields.io/badge/dynamic/json?label=Coverage&query=$.total.lines.pct&suffix=%&url=https://gilhanan.github.io/chat-gpt-rtl/coverage/coverage-summary.json&color=green)](https://gilhanan.github.io/chat-gpt-rtl/coverage/lcov-report)
-[![Playwright report](https://img.shields.io/badge/E2E%20tests-pass-green)](https://gilhanan.github.io/chat-gpt-rtl/playwright-report)
+[![Extension Version](https://img.shields.io/badge/dynamic/json?label=Version&query=$.version&url=https://raw.githubusercontent.com/gilhanan/chat-gpt-rtl/main/public/manifest.json&color=green)](https://ghchatgptrtl.blob.core.windows.net/main/extension.zip)
+[![Jest coverage](https://img.shields.io/badge/dynamic/json?label=Coverage&query=$.total.lines.pct&suffix=%&url=https://ghchatgptrtl.blob.core.windows.net/main/coverage/coverage-summary.json&color=green)](https://ghchatgptrtl.blob.core.windows.net/main/coverage/lcov-report/index.html)
+[![Playwright report](https://img.shields.io/badge/E2E%20tests-pass-green)](https://ghchatgptrtl.blob.core.windows.net/main/playwright-report/index.html)
 
 # ChatGPT RTL Chrome Extension
 

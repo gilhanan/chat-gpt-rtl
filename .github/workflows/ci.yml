@@ -10,13 +10,52 @@ permissions:
   pages: write
   id-token: write
 
+env:
+  AZURE_RESOURCE_GROUP: "gh-chat-gpt-rtl"
+  AZURE_STORAGE_ACCOUNT: "ghchatgptrtl"
+  LOCATION: "West Europe"
+
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v3
+
+      - name: Log in to Azure
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Create Resource Group
+        run: |
+          az group create \
+          --name ${{ env.AZURE_RESOURCE_GROUP }} \
+          --location "${{ env.LOCATION }}"
+
+      - name: Create Azure Storage Account
+        run: |
+          az storage account create \
+          --resource-group ${{ env.AZURE_RESOURCE_GROUP }} \
+          --name ${{ env.AZURE_STORAGE_ACCOUNT }} \
+          --sku Standard_LRS
+
+      - name: Grant Blob Data Contributor permissions to the Service Principal
+        run: |
+          az role assignment create \
+          --assignee ${{ secrets.AZURE_CLIENT_ID }} \
+          --role "Storage Blob Data Contributor" \
+          --scope /subscriptions/${{ secrets.AZURE_SUBSCRIPTION_ID }}/resourceGroups/${{ env.AZURE_RESOURCE_GROUP }}/providers/Microsoft.Storage/storageAccounts/${{ env.AZURE_STORAGE_ACCOUNT }}
+
+      - name: Create Azure Storage Container for the current commit
+        run: |
+          az storage container create \
+          --account-name ${{ env.AZURE_STORAGE_ACCOUNT }} \
+          --name ${{ github.sha }} \
+          --public-access blob \
+          --auth-mode login
 
       - name: Set up Node.js
         uses: actions/setup-node@v3
@@ -32,11 +71,28 @@ jobs:
       - name: Run tests
         run: npm test
 
-      - name: Setup Pages
-        uses: actions/configure-pages@v2
+      - name: Upload Jest coverage to Azure Storage Container for the current commit
+        run: |
+          az storage blob upload-batch \
+          --account-name ${{ env.AZURE_STORAGE_ACCOUNT }} \
+          --destination ${{ github.sha }} \
+          --destination-path coverage \
+          --source ./coverage \
+          --overwrite \
+          --auth-mode login
 
       - name: Build
         run: npm run build
+
+      - name: Upload extension to Azure Storage Container for the current commit
+        run: |
+          az storage blob upload \
+          --account-name ${{ env.AZURE_STORAGE_ACCOUNT }} \
+          --container-name ${{ github.sha }} \
+          --name extension.zip \
+          --file extension.zip \
+          --overwrite \
+          --auth-mode login
 
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
@@ -49,24 +105,44 @@ jobs:
           echo "status=success" >> $GITHUB_OUTPUT
         continue-on-error: true
 
-      - name: Prepare coverage artifacts for upload
+      - name: Upload E2E tests reports to Azure Storage Container
         run: |
-          mkdir -p gh_page/coverage
-          cp -r ./coverage/lcov-report gh_page/coverage/
-          cp ./coverage/coverage-summary.json gh_page/coverage/
+          az storage blob upload-batch \
+          --account-name ${{ env.AZURE_STORAGE_ACCOUNT }} \
+          --destination ${{ github.sha }} \
+          --destination-path playwright-report \
+          --source ./playwright-report \
+          --overwrite \
+          --auth-mode login
 
-      - name: Prepare Playwright report artifacts for upload
+      - name: Generate Job summary with Jest coverage, E2E reports, and Manifest Version
         run: |
-          mkdir -p gh_page/playwright-report
-          cp -r ./playwright-report/* gh_page/playwright-report/
+          MANIFEST_VERSION=$(jq -r '.version' ./public/manifest.json)
+          COVERAGE_SUMMARY_PATH="./coverage/coverage-summary.json"
 
-      - name: Upload GitHub Pages
-        uses: actions/upload-pages-artifact@v1
-        with:
-          path: "./gh_page"
+          LINES_PCT=$(jq -r '.total.lines.pct' "$COVERAGE_SUMMARY_PATH")
+          STATEMENTS_PCT=$(jq -r '.total.statements.pct' "$COVERAGE_SUMMARY_PATH")
+          FUNCTIONS_PCT=$(jq -r '.total.functions.pct' "$COVERAGE_SUMMARY_PATH")
+          BRANCHES_PCT=$(jq -r '.total.branches.pct' "$COVERAGE_SUMMARY_PATH")
 
-      - name: Deploy GitHub Pages
-        uses: actions/deploy-pages@v1
+          cat <<- EOM >> $GITHUB_STEP_SUMMARY
+            #### Job Summary:
+            - **Manifest Version**: $MANIFEST_VERSION
+
+            #### Coverage Summary:
+
+            | Metric     | Coverage |
+            |------------|----------|
+            | Lines      | $LINES_PCT%  |
+            | Statements | $STATEMENTS_PCT% |
+            | Functions  | $FUNCTIONS_PCT%  |
+            | Branches   | $BRANCHES_PCT%  |
+
+            #### Links:
+            - [View Jest Coverage report](https://${{ env.AZURE_STORAGE_ACCOUNT }}.blob.core.windows.net/${{ github.sha }}/coverage/lcov-report/index.html)
+            - [View E2E Tests report](https://${{ env.AZURE_STORAGE_ACCOUNT }}.blob.core.windows.net/${{ github.sha }}/playwright-report/index.html)
+            - [Download extension](https://${{ env.AZURE_STORAGE_ACCOUNT }}.blob.core.windows.net/${{ github.sha }}/extension.zip)
+          EOM
 
       - name: Check E2E test result
         run: |
@@ -74,8 +150,40 @@ jobs:
             exit 1
           fi
 
-      - name: Upload extension
-        uses: actions/upload-artifact@v3
-        with:
-          name: extension
-          path: extension.zip
+      - name: Create Azure Storage Container for main branch
+        run: |
+          az storage container create \
+          --account-name ${{ env.AZURE_STORAGE_ACCOUNT }} \
+          --name main \
+          --public-access blob \
+          --auth-mode login
+
+      - name: Upload Jest coverage to Azure Storage Container for main branch
+        run: |
+          az storage blob upload-batch \
+          --account-name ${{ env.AZURE_STORAGE_ACCOUNT }} \
+          --destination main \
+          --destination-path coverage \
+          --source ./coverage \
+          --overwrite \
+          --auth-mode login
+
+      - name: Upload E2E tests reports to Azure Storage Container for main branch
+        run: |
+          az storage blob upload-batch \
+          --account-name ${{ env.AZURE_STORAGE_ACCOUNT }} \
+          --destination main \
+          --destination-path playwright-report \
+          --source ./playwright-report \
+          --overwrite \
+          --auth-mode login
+
+      - name: Upload extension to Azure Storage Container for main branch
+        run: |
+          az storage blob upload \
+          --account-name ${{ env.AZURE_STORAGE_ACCOUNT }} \
+          --container-name main \
+          --name extension.zip \
+          --file extension.zip \
+          --overwrite \
+          --auth-mode login
