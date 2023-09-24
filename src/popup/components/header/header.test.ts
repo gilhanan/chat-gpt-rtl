@@ -1,11 +1,16 @@
-import { createHeader } from "./";
+import { createHeaderLandmark } from "./";
 
 describe("createHeader", () => {
   describe("rendering", () => {
-    let header: HTMLDivElement;
+    let header: HTMLElement;
 
     beforeEach(() => {
-      header = createHeader();
+      header = createHeaderLandmark();
+    });
+
+    it("should render header", () => {
+      expect(header).toBeDefined();
+      expect(header.tagName).toBe("HEADER");
     });
 
     it("should render title", () => {

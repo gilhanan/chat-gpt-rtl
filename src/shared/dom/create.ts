@@ -29,6 +29,21 @@ export function createHeading({
   return heading;
 }
 
+export function createHeader({
+  className,
+}: {
+  className: string;
+}): HTMLElement {
+  const header = document.createElement("header");
+  header.className = className;
+  return header;
+}
+
+export function createMain(): HTMLElement {
+  const main = document.createElement("main");
+  return main;
+}
+
 export function createDiv({
   className = "",
   textContent = "",
@@ -104,12 +119,15 @@ export function createButton({
 export function createCheckbox({
   id,
   checked,
+  ariaLabel,
 }: {
   id: string;
   checked: boolean;
+  ariaLabel: string;
 }): HTMLInputElement {
   const checkBox = createInput({ id, type: "checkbox" });
   checkBox.checked = checked;
+  checkBox.ariaLabel = ariaLabel;
   return checkBox;
 }
 

@@ -1,6 +1,11 @@
-import { createHeading, createDiv, createAnchor } from "../../../shared/dom";
+import {
+  createHeading,
+  createDiv,
+  createAnchor,
+  createHeader,
+} from "../../../shared/dom";
 
-export function createHeader(): HTMLDivElement {
+export function createHeaderLandmark(): HTMLElement {
   const title = createHeading({
     tagName: "h2",
     className: "text-xl font-medium",
@@ -24,7 +29,7 @@ export function createHeader(): HTMLDivElement {
     ".",
   );
 
-  const container = createDiv({
+  const container = createHeader({
     className: "p-3 border-b border-black/10",
   });
 

@@ -94,12 +94,14 @@ describe("createCheckbox", () => {
     const checkbox = createCheckbox({
       id: "my-checkbox",
       checked: true,
+      ariaLabel: "My Checkbox",
     });
 
     expect(checkbox.tagName).toBe("INPUT");
     expect(checkbox.id).toBe("my-checkbox");
     expect(checkbox.type).toBe("checkbox");
     expect(checkbox.checked).toBe(true);
+    expect(checkbox.ariaLabel).toBe("My Checkbox");
   });
 });
 

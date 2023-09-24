@@ -1,8 +1,17 @@
+import AxeBuilder from "@axe-core/playwright";
 import { test, expect } from "./fixture";
 
 test.describe("Popup", () => {
   test.beforeEach(async ({ page, extensionId }) => {
     await page.goto(`chrome-extension://${extensionId}/popup/popup.html`);
+  });
+
+  test.describe("Accessibility", () => {
+    test("Has no detectable a11y violations on load", async ({ page }) => {
+      const accessibilityScanResults = await new AxeBuilder({ page }).analyze();
+
+      expect(accessibilityScanResults.violations).toEqual([]);
+    });
   });
 
   test.describe("Toggle switch", () => {

@@ -42,7 +42,7 @@ export function createSettingsContainer({
   const container = createDiv({});
 
   const settingsHeading = createHeading({
-    tagName: "h3",
+    tagName: "h1",
     className: "p-3 text-lg font-medium border-b border-black/10",
     textContent: chrome.i18n.getMessage("settings"),
   });

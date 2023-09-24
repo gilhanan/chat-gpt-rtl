@@ -29,6 +29,7 @@ export function createToggleSwitch({
   const input = createCheckbox({
     id: inputId,
     checked,
+    ariaLabel: textContent,
   });
 
   const span = createSpan({
