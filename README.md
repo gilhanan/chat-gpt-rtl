@@ -59,11 +59,3 @@ Run the following command to run a build that will automatically reload the exte
 ```bash
 npm run watch
 ```
-
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-## License
-
-This project is licensed under the ISC License.
