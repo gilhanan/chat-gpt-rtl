@@ -7,7 +7,6 @@ on:
 
 permissions:
   contents: read
-  pages: write
   id-token: write
 
 env:
@@ -16,7 +15,8 @@ env:
   LOCATION: "West Europe"
 
 jobs:
-  build:
+  setup:
+    name: Setup
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -57,6 +57,14 @@ jobs:
           --public-access blob \
           --auth-mode login
 
+  lint-and-tests:
+    name: Lint and tests
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
@@ -71,7 +79,36 @@ jobs:
       - name: Run tests
         run: npm test
 
-      - name: Upload Jest coverage to Azure Storage Container for the current commit
+      - name: Generate Job summary Tests coverage
+        run: |
+          COVERAGE_SUMMARY_PATH="./coverage/coverage-summary.json"
+          LINES_PCT=$(jq -r '.total.lines.pct' "$COVERAGE_SUMMARY_PATH")
+          STATEMENTS_PCT=$(jq -r '.total.statements.pct' "$COVERAGE_SUMMARY_PATH")
+          FUNCTIONS_PCT=$(jq -r '.total.functions.pct' "$COVERAGE_SUMMARY_PATH")
+          BRANCHES_PCT=$(jq -r '.total.branches.pct' "$COVERAGE_SUMMARY_PATH")
+
+          cat <<- EOM >> $GITHUB_STEP_SUMMARY
+            #### Coverage Summary:
+
+            | Metric     | Coverage |
+            |------------|----------|
+            | Lines      | $LINES_PCT%  |
+            | Statements | $STATEMENTS_PCT% |
+            | Functions  | $FUNCTIONS_PCT%  |
+            | Branches   | $BRANCHES_PCT%  |
+
+            #### Links:
+            - [View Tests Coverage report](https://${{ env.AZURE_STORAGE_ACCOUNT }}.blob.core.windows.net/${{ github.sha }}/coverage/lcov-report/index.html)
+          EOM
+
+      - name: Log in to Azure
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Upload current commit Jest coverage
         run: |
           az storage blob upload-batch \
           --account-name ${{ env.AZURE_STORAGE_ACCOUNT }} \
@@ -81,10 +118,33 @@ jobs:
           --overwrite \
           --auth-mode login
 
+  e2e-tests:
+    name: E2E tests
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm install
+
       - name: Build
         run: npm run build
 
-      - name: Upload extension to Azure Storage Container for the current commit
+      - name: Log in to Azure
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Upload current commit extension
         run: |
           az storage blob upload \
           --account-name ${{ env.AZURE_STORAGE_ACCOUNT }} \
@@ -105,7 +165,7 @@ jobs:
           echo "status=success" >> $GITHUB_OUTPUT
         continue-on-error: true
 
-      - name: Upload E2E tests reports to Azure Storage Container
+      - name: Upload current commit E2E tests reports
         run: |
           az storage blob upload-batch \
           --account-name ${{ env.AZURE_STORAGE_ACCOUNT }} \
@@ -115,31 +175,10 @@ jobs:
           --overwrite \
           --auth-mode login
 
-      - name: Generate Job summary with Jest coverage, E2E reports, and Manifest Version
+      - name: Generate Job summary with E2E reports and extension download link
         run: |
-          MANIFEST_VERSION=$(jq -r '.version' ./public/manifest.json)
-          COVERAGE_SUMMARY_PATH="./coverage/coverage-summary.json"
-
-          LINES_PCT=$(jq -r '.total.lines.pct' "$COVERAGE_SUMMARY_PATH")
-          STATEMENTS_PCT=$(jq -r '.total.statements.pct' "$COVERAGE_SUMMARY_PATH")
-          FUNCTIONS_PCT=$(jq -r '.total.functions.pct' "$COVERAGE_SUMMARY_PATH")
-          BRANCHES_PCT=$(jq -r '.total.branches.pct' "$COVERAGE_SUMMARY_PATH")
-
           cat <<- EOM >> $GITHUB_STEP_SUMMARY
-            #### Job Summary:
-            - **Manifest Version**: $MANIFEST_VERSION
-
-            #### Coverage Summary:
-
-            | Metric     | Coverage |
-            |------------|----------|
-            | Lines      | $LINES_PCT%  |
-            | Statements | $STATEMENTS_PCT% |
-            | Functions  | $FUNCTIONS_PCT%  |
-            | Branches   | $BRANCHES_PCT%  |
-
             #### Links:
-            - [View Jest Coverage report](https://${{ env.AZURE_STORAGE_ACCOUNT }}.blob.core.windows.net/${{ github.sha }}/coverage/lcov-report/index.html)
             - [View E2E Tests report](https://${{ env.AZURE_STORAGE_ACCOUNT }}.blob.core.windows.net/${{ github.sha }}/playwright-report/index.html)
             - [Download extension](https://${{ env.AZURE_STORAGE_ACCOUNT }}.blob.core.windows.net/${{ github.sha }}/extension.zip)
           EOM
@@ -150,6 +189,18 @@ jobs:
             exit 1
           fi
 
+  deploy:
+    name: Deploy
+    needs: [lint-and-tests, e2e-tests]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Log in to Azure
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
       - name: Create Azure Storage Container for main branch
         run: |
           az storage container create \
@@ -158,32 +209,9 @@ jobs:
           --public-access blob \
           --auth-mode login
 
-      - name: Upload Jest coverage to Azure Storage Container for main branch
+      - name: Copy current commit container blobs to main branch container
         run: |
-          az storage blob upload-batch \
-          --account-name ${{ env.AZURE_STORAGE_ACCOUNT }} \
-          --destination main \
-          --destination-path coverage \
-          --source ./coverage \
-          --overwrite \
-          --auth-mode login
-
-      - name: Upload E2E tests reports to Azure Storage Container for main branch
-        run: |
-          az storage blob upload-batch \
-          --account-name ${{ env.AZURE_STORAGE_ACCOUNT }} \
-          --destination main \
-          --destination-path playwright-report \
-          --source ./playwright-report \
-          --overwrite \
-          --auth-mode login
-
-      - name: Upload extension to Azure Storage Container for main branch
-        run: |
-          az storage blob upload \
-          --account-name ${{ env.AZURE_STORAGE_ACCOUNT }} \
-          --container-name main \
-          --name extension.zip \
-          --file extension.zip \
-          --overwrite \
-          --auth-mode login
+          az storage copy \
+          --source https://${{ env.AZURE_STORAGE_ACCOUNT }}.blob.core.windows.net/${{ github.sha }} \
+          --destination https://${{ env.AZURE_STORAGE_ACCOUNT }}.blob.core.windows.net/main \
+          --recursive
