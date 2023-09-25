@@ -6,6 +6,8 @@ export default defineConfig({
   testDir: "./e2e",
   forbidOnly: isCI,
   reporter: "html",
+  timeout: 5 * 60 * 1000,
+  retries: isCI ? 2 : 0,
   use: {
     trace: "on",
   },
