@@ -8,6 +8,7 @@ on:
 permissions:
   contents: read
   id-token: write
+  security-events: write
 
 env:
   AZURE_RESOURCE_GROUP: "gh-chat-gpt-rtl"
@@ -56,6 +57,64 @@ jobs:
           --name ${{ github.sha }} \
           --public-access blob \
           --auth-mode login
+
+  code-ql:
+    name: CodeQL
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v2
+
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v2
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v2
+
+      - name: Log in to Azure
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Upload current commit CodeQL SARIF report
+        run: |
+          az storage blob upload \
+          --account-name ${{ env.AZURE_STORAGE_ACCOUNT }} \
+          --container-name ${{ github.sha }} \
+          --name javascript.sarif \
+          --file ../results/javascript.sarif \
+          --overwrite \
+          --auth-mode login
+
+      - name: Generate Job summary with CodeQL report
+        run: |
+          cat <<- EOM >> $GITHUB_STEP_SUMMARY
+            #### Links:
+            - [View CodeQL SARIF report](https://${{ env.AZURE_STORAGE_ACCOUNT }}.blob.core.windows.net/${{ github.sha }}/javascript.sarif)
+          EOM
+
+      - name: Fail if CodeQL found alerts
+        run: |
+          REPORT_PATH="../results/javascript.sarif"
+
+          if [[ ! -f "$REPORT_PATH" ]]; then
+            echo "CodeQL SARIF report not found!"
+            exit 1
+          fi
+
+          ISSUE_COUNT=$(jq '.runs[0].results | length' "$REPORT_PATH")
+          if [ "$ISSUE_COUNT" -gt 0 ]; then
+            echo "CodeQL found $ISSUE_COUNT issues."
+            exit 1
+          else
+            echo "No issues found by CodeQL."
+          fi
 
   lint-and-tests:
     name: Lint and tests
@@ -191,7 +250,7 @@ jobs:
 
   deploy:
     name: Deploy
-    needs: [lint-and-tests, e2e-tests]
+    needs: [code-ql, lint-and-tests, e2e-tests]
     runs-on: ubuntu-latest
     steps:
       - name: Log in to Azure
