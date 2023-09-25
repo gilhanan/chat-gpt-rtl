@@ -29,14 +29,14 @@ You can install it from [Chrome Web Store](https://chrome.google.com/webstore/de
 
 ## Getting Started
 
-To get started with this project, clone the repository to your local machine:
+Clone the repository to your local machine:
 
 ```bash
-git clone https://github.com/<your-username>/chatgpt-rtl.git
+git clone https://github.com/gilhanan/chat-gpt-rtl.git
 cd chatgpt-rtl
 ```
 
-Then install the necessary dependencies:
+Install the necessary dependencies:
 
 ```bash
 npm install
@@ -44,7 +44,7 @@ npm install
 
 ## Building the Extension
 
-You can build the extension by running the following command:
+Build the extension by running the following command:
 
 ```bash
 npm run build
@@ -54,7 +54,7 @@ This command will generate a `dist` directory with the built extension and a `ex
 
 ## Developing the Extension
 
-If you want to develop the extension and have webpack automatically rebuild any changes, you can run:
+Run the following command to run a build that will automatically reload the extension when you make changes:
 
 ```bash
 npm run watch
