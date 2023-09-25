@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
 
 permissions:
   contents: read
@@ -250,6 +253,7 @@ jobs:
 
   deploy:
     name: Deploy
+    if: github.event_name == 'push'
     needs: [code-ql, lint-and-tests, e2e-tests]
     runs-on: ubuntu-latest
     steps:
