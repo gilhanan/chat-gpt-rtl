@@ -1,6 +1,8 @@
-[![Extension Version](https://img.shields.io/badge/dynamic/json?label=Version&query=$.version&url=https://raw.githubusercontent.com/gilhanan/chat-gpt-rtl/main/public/manifest.json&color=green)](https://ghchatgptrtl.blob.core.windows.net/main/extension.zip)
+[![CI GitHub action](https://github.com/gilhanan/chat-gpt-rtl/workflows/CI/badge.svg)](https://github.com/gilhanan/chat-gpt-rtl/actions/workflows/ci.yml)
+[![CodeQL GitHub action](https://github.com/gilhanan/chat-gpt-rtl/workflows/CodeQL/badge.svg)](https://github.com/gilhanan/chat-gpt-rtl/actions/workflows/codeql.yml)
+[![Extension Version](https://img.shields.io/badge/dynamic/json?label=Version&query=$.version&url=https://raw.githubusercontent.com/gilhanan/chat-gpt-rtl/main/public/manifest.json)](https://ghchatgptrtl.blob.core.windows.net/main/extension.zip)
 [![Jest coverage](https://img.shields.io/badge/dynamic/json?label=Coverage&query=$.total.lines.pct&suffix=%&url=https://ghchatgptrtl.blob.core.windows.net/main/coverage/coverage-summary.json&color=green)](https://ghchatgptrtl.blob.core.windows.net/main/coverage/lcov-report/index.html)
-[![Playwright report](https://img.shields.io/badge/E2E%20tests-pass-green)](https://ghchatgptrtl.blob.core.windows.net/main/playwright-report/index.html)
+[![Playwright report](https://img.shields.io/badge/E2E%20tests-passing-green)](https://ghchatgptrtl.blob.core.windows.net/main/playwright-report/index.html)
 
 # ChatGPT RTL Chrome Extension
 
