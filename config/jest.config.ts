@@ -1,6 +1,7 @@
 import type { Config } from "jest";
 
 const config: Config = {
+  rootDir: "../",
   collectCoverage: true,
   collectCoverageFrom: ["src/**/*.{ts,js}"],
   coverageReporters: ["clover", "json", "json-summary", "lcov", "text"],
@@ -14,7 +15,7 @@ const config: Config = {
   },
   preset: "ts-jest",
   testEnvironment: "jsdom",
-  setupFiles: ["./jest.setup.ts"],
+  setupFiles: ["./config/jest.setup.ts"],
   moduleNameMapper: {
     "\\.scss$": "<rootDir>/__mocks__/styleMock.ts",
   },

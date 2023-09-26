@@ -3,7 +3,7 @@ import { defineConfig, devices } from "@playwright/test";
 const isCI = Boolean(process.env.CI);
 
 export default defineConfig({
-  testDir: "./e2e",
+  testDir: "../e2e",
   forbidOnly: isCI,
   reporter: "html",
   timeout: 5 * 60 * 1000,

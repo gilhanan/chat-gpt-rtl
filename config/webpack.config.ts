@@ -35,7 +35,14 @@ const config: webpack.Configuration = {
         use: [
           MiniCssExtractPlugin.loader,
           "css-loader",
-          "postcss-loader",
+          {
+            loader: "postcss-loader",
+            options: {
+              postcssOptions: {
+                config: path.resolve(__dirname, "postcss.config.ts"),
+              },
+            },
+          },
           "sass-loader",
         ],
         exclude: /node_modules/,
