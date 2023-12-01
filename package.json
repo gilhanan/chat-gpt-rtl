@@ -39,7 +39,7 @@
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.7.3",
-    "@playwright/test": "^1.36.2",
+    "@playwright/test": "^1.40.1",
     "@types/archiver": "^5.3.2",
     "@types/chrome": "^0.0.246",
     "@types/jest": "^29.5.3",
